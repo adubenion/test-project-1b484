@@ -11,16 +11,18 @@ class App extends React.Component {
     super(props);
     this.state = {
       toWatch: [],
-      watched: []
+      watched: [],
+      add: []
     }
     this.addAnime = this.addAnime.bind(this);
     this.deleteWatch = this.deleteWatch.bind(this);
     this.deleteWatched = this.deleteWatched.bind(this);
+    this.updateState= this.updateState.bind(this);
   }
 
 
   componentDidMount() {
-    fetch('https://test-project-1b484.firebaseio.com/.json')
+    return fetch('https://test-project-1b484.firebaseio.com/.json')
     .then(result => {
       return result.json()
     })
@@ -32,12 +34,19 @@ class App extends React.Component {
         add: 'Enter Anime Name...'
       })
     })
-    fetch
   }
 
-  addAnime() {
-    var addInput = this.state.add;
-    firebase.database().ref('toWatch/anime')
+  updateState(e) {
+    this.setState({add: e.target.value})
+  }
+
+
+  addAnime(i) {
+    i.preventDefault();
+    var list = this.state.toWatch;
+    var newList = list.concat(this.state.add)
+    this.setState({toWatch: newList})
+    console.log(newList)
   }
 
   deleteWatch(i) {
@@ -57,7 +66,7 @@ class App extends React.Component {
       <div>
         <h1>Anime Watch List</h1>
         <h2>To Watch</h2>
-          <Watch input={this.state.add} submit={this.addAnime}/>
+          <Watch addAnime={this.addAnime} update={this.updateState} input={this.state.add} submit={this.addAnime}/>
           <WatchList list={this.state.toWatch} delete={this.deleteWatch} />
         <h2>Watched</h2>
           <Watched list={this.state.watched} delete={this.deleteWatched} />

@@ -5,12 +5,12 @@ class Watch extends React.Component {
 	render() {
 		return(
 			<div>
-				<form>
+				<form onSubmit={this.props.addAnime}>
 					<label>
 					Add Anime:
-						<input type="text" value={this.props.input} />
+						<input type="text" onChange={this.props.update} value={this.props.input} name="input" />
 					</label>
-					<input type="submit" value="Submit" />
+					<input onClick={this.props.addAnime} type="button" value="Submit" />
 				</form>
 			</div>
 		);
