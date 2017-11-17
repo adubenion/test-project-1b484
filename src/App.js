@@ -18,6 +18,7 @@ class App extends React.Component {
     this.deleteWatch = this.deleteWatch.bind(this);
     this.deleteWatched = this.deleteWatched.bind(this);
     this.updateState= this.updateState.bind(this);
+    this.watched = this.watched.bind(this);
   }
 
 
@@ -31,7 +32,7 @@ class App extends React.Component {
       this.setState({
         toWatch: resultJson.toWatch.anime,
         watched: resultJson.watched.anime,
-        add: 'Enter Anime Name...'
+        add: ''
       })
     })
   }
@@ -40,14 +41,46 @@ class App extends React.Component {
     this.setState({add: e.target.value})
   }
 
+  watched(a, b) {
+    console.log(a, b);
+
+    {/*get initial To Watch List*/}
+    var watchList = this.state.toWatch.slice();
+    console.log(watchList);
+
+    {/*get initial Watched List*/}
+    var watchedList = this.state.watched.slice();
+    console.log(watchedList);
+
+    {/*get modified To Watch List*/}
+    watchList.splice(b, 1);
+    console.log(watchList);
+
+    {/*get modified Watched List*/}
+    var newWatched = watchedList.concat(a);
+    console.log(newWatched);
+
+    return this.setState({
+      toWatch: watchList,
+      watched: newWatched
+
+    })
+  }
+
 
   addAnime(i) {
+    {/*Prevent page from defaulting to refresh*/}
     i.preventDefault();
     var list = this.state.toWatch;
     var newList = list.concat(this.state.add)
-    this.setState({toWatch: newList})
     console.log(newList)
+    
+    return this.setState({
+      toWatch: newList,
+      add: ''
+         })
   }
+
 
   deleteWatch(i) {
       var unWatch = this.state.toWatch.slice();
@@ -67,7 +100,7 @@ class App extends React.Component {
         <h1>Anime Watch List</h1>
         <h2>To Watch</h2>
           <Watch addAnime={this.addAnime} update={this.updateState} input={this.state.add} submit={this.addAnime}/>
-          <WatchList list={this.state.toWatch} delete={this.deleteWatch} />
+          <WatchList watched={this.watched} list={this.state.toWatch} delete={this.deleteWatch} />
         <h2>Watched</h2>
           <Watched list={this.state.watched} delete={this.deleteWatched} />
       </div>
