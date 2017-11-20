@@ -1,10 +1,9 @@
 import React from 'react'
-import firebase from 'firebase'
 
 class WatchList extends React.Component {
 	render() {
 		const myWatchList = this.props.list.map((listItems, key) => 
-				<div key={key}>
+				<div key={key} className="listItem">
 					<li name={listItems}>{listItems}</li> 
 					<button onClick={this.props.watched.bind(this, listItems, key)}>DONE</button>
 					<button onClick={this.props.delete.bind(this, key)}>DELETE</button>
